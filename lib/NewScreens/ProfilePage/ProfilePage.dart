@@ -192,7 +192,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   showSpinner = true;
                   FirebaseAuth.instance.signOut();
                   Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) {
-                    return SignIn();
+                    return const SignIn();
                   }));
                   showSpinner = false;
                 },
@@ -213,7 +213,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                 const SizedBox(
                                   width: 10,
                                 ),
-                                Text("Logout")
+                                const Text("Logout")
                               ],
                             ),
                             Transform.rotate(

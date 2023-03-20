@@ -1,5 +1,4 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 
@@ -18,7 +17,7 @@ getStream() {
       (location == 'All')) {
     return _firestore
         .collection('Posts')
-        .where('archive', isEqualTo: 'no')
+        // .where('archive', isEqualTo: 'no')
         .orderBy('time', descending: true)
         .snapshots();
   }
@@ -33,7 +32,7 @@ getStream() {
       (location != 'All')) {
     return _firestore
         .collection('Posts')
-        .where('archive', isEqualTo: 'no')
+        // .where('archive', isEqualTo: 'no')
         .where('productCategory', isEqualTo: category)
         .where('color', isEqualTo: color)
         .where('fabric', isEqualTo: fabric)
@@ -57,7 +56,7 @@ getStream() {
       (location == 'All')) {
     return _firestore
         .collection('Posts')
-        .where('archive', isEqualTo: 'no')
+        // .where('archive', isEqualTo: 'no')
         .where('productCategory', isEqualTo: category)
         .orderBy('time', descending: true)
         .snapshots();
@@ -74,7 +73,7 @@ getStream() {
       (location == 'All')) {
     return _firestore
         .collection('Posts')
-        .where('archive', isEqualTo: 'no')
+        // .where('archive', isEqualTo: 'no')
         .where('size', isEqualTo: size)
         .orderBy('time', descending: true)
         .snapshots();
@@ -90,7 +89,7 @@ getStream() {
       (location == 'All')) {
     return _firestore
         .collection('Posts')
-        .where('archive', isEqualTo: 'no')
+        // .where('archive', isEqualTo: 'no')
         .where('color', isEqualTo: color)
         .orderBy('time', descending: true)
         .snapshots();
@@ -106,7 +105,7 @@ getStream() {
       (location == 'All')) {
     return _firestore
         .collection('Posts')
-        .where('archive', isEqualTo: 'no')
+        // .where('archive', isEqualTo: 'no')
         .where('fabric', isEqualTo: fabric)
         .orderBy('time', descending: true)
         .snapshots();
@@ -122,7 +121,7 @@ getStream() {
       (location == 'All')) {
     return _firestore
         .collection('Posts')
-        .where('archive', isEqualTo: 'no')
+        // .where('archive', isEqualTo: 'no')
         .where('occasion', isEqualTo: occasion)
         .orderBy('time', descending: true)
         .snapshots();
@@ -138,7 +137,7 @@ getStream() {
       (location == 'All')) {
     return _firestore
         .collection('Posts')
-        .where('archive', isEqualTo: 'no')
+        // .where('archive', isEqualTo: 'no')
         .orderBy('time', descending: (sort == 'Old Posts') ? false : true)
         .snapshots();
   }
@@ -153,7 +152,7 @@ getStream() {
       (location == 'All')) {
     return _firestore
         .collection('Posts')
-        .where('archive', isEqualTo: 'no')
+        // .where('archive', isEqualTo: 'no')
         .orderBy('cost', descending: (price == 'Low to High') ? false : true)
         .orderBy('time', descending: true)
         .snapshots();
@@ -169,7 +168,7 @@ getStream() {
       (location == 'All')) {
     return _firestore
         .collection('Posts')
-        .where('archive', isEqualTo: 'no')
+        // .where('archive', isEqualTo: 'no')
         .where('materialCondition', isEqualTo: condition)
         .orderBy('time', descending: true)
         .snapshots();
@@ -180,7 +179,7 @@ getStream() {
   if ((category != 'All') && (color != 'All') && (fabric == 'All')) {
     return _firestore
         .collection('Posts')
-        .where('archive', isEqualTo: 'no')
+        // .where('archive', isEqualTo: 'no')
         .where('productCategory', isEqualTo: category)
         .where('color', isEqualTo: color)
         .orderBy('time', descending: true)
@@ -190,7 +189,7 @@ getStream() {
   if ((category != 'All') && (color == 'All') && (fabric != 'All')) {
     return _firestore
         .collection('Posts')
-        .where('archive', isEqualTo: 'no')
+        // .where('archive', isEqualTo: 'no')
         .where('productCategory', isEqualTo: category)
         .where('fabric', isEqualTo: fabric)
         .orderBy('time', descending: true)
@@ -200,7 +199,7 @@ getStream() {
   if (color != 'All' && category == 'All' && fabric != 'All') {
     return _firestore
         .collection('Posts')
-        .where('archive', isEqualTo: 'no')
+        // .where('archive', isEqualTo: 'no')
         .where('color', isEqualTo: color)
         .where('fabric', isEqualTo: fabric)
         .orderBy('time', descending: true)

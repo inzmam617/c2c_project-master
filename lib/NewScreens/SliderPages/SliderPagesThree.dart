@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
-import '../HomePages/Home.dart';
 import '../SignIn/SignIn.dart';
 
 class SliderPagesThree extends StatelessWidget {

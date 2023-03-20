@@ -159,7 +159,7 @@ class _SeeAllPostsState extends State<SeeAllPosts> {
           ),
         ),
         appBar: AppBar(
-          title: Text("All  Post",style: TextStyle(color: Colors.black),),
+          title: const Text("All  Post",style: TextStyle(color: Colors.black),),
           centerTitle: true,
 
           automaticallyImplyLeading: false,

@@ -939,7 +939,7 @@ class _PostProductDetailsState extends State<PostProductDetails> {
                               }).then((docRef) => {
                                   // Get the document ID
                                    documentId = docRef.id,
-                                  print("Document ID: " + documentId),
+                                  print("Document ID: $documentId"),
                                 firestore.collection('Posts').doc(documentId).update(
                                     {
                                       "postuid" : documentId

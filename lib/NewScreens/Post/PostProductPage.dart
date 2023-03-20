@@ -16,72 +16,14 @@ class PostProductPage extends StatefulWidget {
 class _PostProductPageState extends State<PostProductPage> {
 
 
-  // bool showSpinner = false;
-  // bool uploading = false;
-
   int counter = 0;
 
-  // displayImage() {
-  //   if (_image.isEmpty) {
-  //     return const Padding(
-  //       padding: EdgeInsets.all(8.0),
-  //       child: SizedBox(
-  //         width: 100.0,
-  //         height: 100.0,
-  //         child: Center(child: Text('You can add up to 7 more images!')),
-  //       ),
-  //     );
-  //   } else {
-  //     return Row(
-  //       children: [
-  //         Expanded(
-  //           child: SizedBox(
-  //             width: 100.0,
-  //             height: 150.0,
-  //             child: GridView.builder(
-  //                 itemCount: _image.length,
-  //                 physics: const NeverScrollableScrollPhysics(),
-  //                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-  //                   crossAxisCount: 5,
-  //                 ),
-  //                 itemBuilder: (context, index) {
-  //                   return Container(
-  //                     margin: const EdgeInsets.all(3),
-  //                     decoration: BoxDecoration(
-  //                       image: DecorationImage(
-  //                           image: FileImage(_image[index]), fit: BoxFit.cover),
-  //                     ),
-  //                     child: Center(
-  //                       child: TextButton(
-  //                         onPressed: () {
-  //                           setState(() {
-  //                             _image.removeAt(index);
-  //                             counter -= 1;
-  //                           });
-  //                         },
-  //                         child: Icon(
-  //                           Icons.cancel,
-  //                           color: Colors.white.withOpacity(0.5),
-  //                         ),
-  //                       ),
-  //                     ),
-  //                   );
-  //                 }),
-  //           ),
-  //         ),
-  //       ],
-  //     );
-  //   }
-  // }
 
   chooseImage() async {
     final uploadImage =
     await ImagePicker().pickImage(source: ImageSource.gallery);
 
     if (uploadImage == null) {
-      // setState(() {
-      //   showSpinner = false;
-      // });
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('No File Selected!'),

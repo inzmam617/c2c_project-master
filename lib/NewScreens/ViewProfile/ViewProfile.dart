@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 
 class ViewProfile extends StatefulWidget {
   const ViewProfile({Key? key}) : super(key: key);
@@ -18,6 +19,7 @@ class _ViewProfileState extends State<ViewProfile> {
     getData();
     super.initState();
   }
+  double avgRating = 0;
   @override
   Widget build(BuildContext context) {
     print(savedPostsList);
@@ -42,6 +44,17 @@ class _ViewProfileState extends State<ViewProfile> {
         stream: getData(),
         builder:(BuildContext context, AsyncSnapshot<dynamic> snapshot) {
           if(snapshot.hasData) {
+            var rating = snapshot.data?.get("rating");
+            avgRating = (rating['1']['0'] * 1 +
+                rating['2']['0'] * 2 +
+                rating['3']['0'] * 3 +
+                rating['4']['0'] * 4 +
+                rating['5']['0'] * 5) /
+                (rating['1']['0'] +
+                    rating['2']['0'] +
+                    rating['3']['0'] +
+                    rating['4']['0'] +
+                    rating['5']['0']);
             return Column(
               children: [
                 const SizedBox(height: 50,),
@@ -109,24 +122,26 @@ class _ViewProfileState extends State<ViewProfile> {
                       style: const TextStyle(color: Colors.black, fontSize: 17),)
                   ],
                 ),
-                // RatingBar(
-                //   itemSize: MediaQuery.of(context).size.width * 0.05,
-                //   ignoreGestures: true,
-                //   initialRating: snapshot.data["rating"],
-                //   direction: Axis.horizontal,
-                //   itemCount: 5,
-                //   ratingWidget: RatingWidget(
-                //       full: const Icon(Icons.star, color: Colors.yellow),
-                //       half: const Icon(
-                //         Icons.star_half,
-                //         color: Colors.yellow,
-                //       ),
-                //       empty: const Icon(
-                //         Icons.star_outline,
-                //         color: Colors.yellow,
-                //       )),
-                //   onRatingUpdate: (double value) {},
-                // ),
+                    const SizedBox(height: 20,),
+                    RatingBar(
+                    itemSize: MediaQuery.of(context).size.width * 0.08,
+                    ignoreGestures: true,
+                    initialRating: avgRating,
+                    direction: Axis.horizontal,
+                    itemCount: 5,
+                    ratingWidget: RatingWidget(
+                    full: const Icon(Icons.star,
+                    color: Colors.yellow),
+                    half: const Icon(
+                    Icons.star_half,
+                    color: Colors.yellow,
+                    ),
+                    empty: const Icon(
+                    Icons.star_outline,
+                    color: Colors.yellow,
+                    )),
+                    onRatingUpdate: (double value) {},
+                    )
 
               ],
             );

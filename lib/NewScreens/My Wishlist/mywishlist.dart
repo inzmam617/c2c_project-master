@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import '../../components/profile_generator.dart';
 import '../AllPosts/ProductDetails/ProductDetails.dart';
 
 class mywishlist extends StatefulWidget {
@@ -93,9 +92,9 @@ class _mywishlistState extends State<mywishlist> {
         ),
         body: FutureBuilder(
           future: FirebaseFirestore.instance.collection("userProfile").doc(FirebaseAuth.instance.currentUser?.uid).get(),
-          builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
-            if(snapshot.hasData){
-              psot = snapshot.data["savedPosts"];
+          builder: (BuildContext context, AsyncSnapshot<dynamic> datashot) {
+            if(datashot.hasData){
+              psot = datashot.data["savedPosts"];
               print(psot);
               return Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -200,7 +199,7 @@ class _mywishlistState extends State<mywishlist> {
                                                           child: Container(
                                                               height: 25,
                                                               width: 25,
-                                                              decoration: BoxDecoration(
+                                                              decoration: const BoxDecoration(
                                                                   boxShadow: [
                                                                     BoxShadow(
                                                                         color: Colors.grey,
@@ -245,7 +244,7 @@ class _mywishlistState extends State<mywishlist> {
                                                         child: Container(
                                                             height: 25,
                                                             width: 25,
-                                                            decoration: BoxDecoration(
+                                                            decoration: const BoxDecoration(
                                                                 boxShadow: [
                                                                   BoxShadow(
                                                                       color: Colors.grey,
@@ -285,7 +284,7 @@ class _mywishlistState extends State<mywishlist> {
                                                       return
                                                         ElevatedButton(onPressed: (){
                                                           print(datashot.data?[index] ["savedPosts"]);
-                                                        }, child: Text("No DATA"));
+                                                        }, child: const Text("No DATA"));
                                                     }
                                                     // return const SizedBox(child: Text("apsdo"),);
                                                   },
@@ -313,36 +312,36 @@ class _mywishlistState extends State<mywishlist> {
                                             fontWeight:
                                             FontWeight.bold),
                                       ),
-                                      const SizedBox(
-                                        height: 5,
-                                      ),
-                                      SizedBox(
-                                        height: 30,
-                                        width: 100,
-                                        child: ElevatedButton(
-                                            style: ButtonStyle(
-                                                shape: MaterialStateProperty.all(
-                                                    const RoundedRectangleBorder(
-                                                        borderRadius:
-                                                        BorderRadius.all(
-                                                            Radius.circular(
-                                                                50)))),
-                                                backgroundColor:
-                                                MaterialStateProperty
-                                                    .all(const Color(
-                                                    0xffFD8A00))),
-                                            onPressed: () {
-                                              snapshot.data?.docs[index]["savedPosts"].forEach((post) {
-                                                print(post);
-                                              });
-                                            },
-                                            child: const Text(
-                                              "Add to Card",
-                                              style: TextStyle(
-                                                  color: Colors.white,
-                                                  fontSize: 12),
-                                            )),
-                                      ),
+                                      // const SizedBox(
+                                      //   height: 5,
+                                      // ),
+                                      // SizedBox(
+                                      //   height: 30,
+                                      //   width: 100,
+                                      //   child: ElevatedButton(
+                                      //       style: ButtonStyle(
+                                      //           shape: MaterialStateProperty.all(
+                                      //               const RoundedRectangleBorder(
+                                      //                   borderRadius:
+                                      //                   BorderRadius.all(
+                                      //                       Radius.circular(
+                                      //                           50)))),
+                                      //           backgroundColor:
+                                      //           MaterialStateProperty
+                                      //               .all(const Color(
+                                      //               0xffFD8A00))),
+                                      //       onPressed: () {
+                                      //         snapshot.data?.docs[index]["savedPosts"].forEach((post) {
+                                      //           print(post);
+                                      //         });
+                                      //       },
+                                      //       child: const Text(
+                                      //         "Add to Card",
+                                      //         style: TextStyle(
+                                      //             color: Colors.white,
+                                      //             fontSize: 12),
+                                      //       )),
+                                      // ),
 
 
                                     ],
@@ -351,14 +350,24 @@ class _mywishlistState extends State<mywishlist> {
                               }),
                         );
                       } else {
-                        return const Center(child: Text("No Data"));
+                        return  Center(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              SvgPicture.asset("assests/Heart.svg"),
+                              const SizedBox(height: 20,),
+                              const Text("No Products Found!"),
+                            ],
+                          ),
+                        );
                       }
                     }),
               );
 
             }
             else{
-              return Center(child: Text("asd"),);
+              return const Center(child: Text("asd"),);
             }
 
         },
