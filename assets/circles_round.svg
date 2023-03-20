@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="430" height="228" viewBox="0 0 430 228">
+  <g id="Group_1708" data-name="Group 1708" transform="translate(7 -615.752)">
+    <g id="design_colors" data-name="design colors" transform="translate(214 681.752)" opacity="0.08">
+      <circle id="Ellipse_276" data-name="Ellipse 276" cx="27.5" cy="27.5" r="27.5" transform="translate(110)" fill="#f86fa6"/>
+      <g id="Group_1316" data-name="Group 1316" transform="translate(0 80)">
+        <ellipse id="Ellipse_277" data-name="Ellipse 277" cx="34.5" cy="35" rx="34.5" ry="35" transform="translate(140 12)" fill="#004973"/>
+        <ellipse id="Ellipse_275" data-name="Ellipse 275" cx="34" cy="34.5" rx="34" ry="34.5" fill="#a90000"/>
+      </g>
+    </g>
+    <g id="design_colors-2" data-name="design colors" transform="translate(-7 616)" opacity="0.08">
+      <circle id="Ellipse_276-2" data-name="Ellipse 276" cx="18.5" cy="18.5" r="18.5" transform="translate(74 -0.248)" fill="#f86fa6"/>
+      <g id="Group_1316-2" data-name="Group 1316" transform="translate(0 54)">
+        <circle id="Ellipse_277-2" data-name="Ellipse 277" cx="23.5" cy="23.5" r="23.5" transform="translate(94 7.752)" fill="#004973"/>
+        <circle id="Ellipse_275-2" data-name="Ellipse 275" cx="23" cy="23" r="23" transform="translate(0 -0.248)" fill="#a90000"/>
+      </g>
+    </g>
+  </g>
+</svg>

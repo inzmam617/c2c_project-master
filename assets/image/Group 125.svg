@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="66.164" height="66.164" viewBox="0 0 66.164 66.164">
+  <g id="Group_125" data-name="Group 125" transform="translate(-2567.08)">
+    <g id="Rectangle_35" data-name="Rectangle 35" transform="translate(2567.08)" fill="#fff" stroke="rgba(32,10,77,0.2)" stroke-width="1">
+      <rect width="66.164" height="66.164" rx="33.082" stroke="none"/>
+      <rect x="0.5" y="0.5" width="65.164" height="65.164" rx="32.582" fill="none"/>
+    </g>
+    <g id="icons8-google" transform="translate(2590.08 23)">
+      <path id="Path_539" data-name="Path 539" d="M23.968,12.108h-.812v-.042H14.082V16.1h5.7A6.054,6.054,0,1,1,18.1,9.565l2.852-2.852a10.072,10.072,0,1,0,3.217,7.369A10.151,10.151,0,0,0,23.968,12.108Z" transform="translate(-4 -4)" fill="#ffc107"/>
+      <path id="Path_540" data-name="Path 540" d="M6.306,9.389l3.312,2.429a6.037,6.037,0,0,1,9.62-2.254l2.852-2.852A10.062,10.062,0,0,0,6.306,9.389Z" transform="translate(-5.144 -4)" fill="#ff3d00"/>
+      <path id="Path_541" data-name="Path 541" d="M15.171,36.092a10.035,10.035,0,0,0,6.76-2.617l-3.12-2.641a6.034,6.034,0,0,1-9.327-2.781L6.2,30.587A10.074,10.074,0,0,0,15.171,36.092Z" transform="translate(-5.088 -15.928)" fill="#4caf50"/>
+      <path id="Path_542" data-name="Path 542" d="M33.886,20.042h-.812V20H24v4.033h5.7a6.069,6.069,0,0,1-2.06,2.808h0l3.12,2.641a9.753,9.753,0,0,0,3.323-7.464A10.151,10.151,0,0,0,33.886,20.042Z" transform="translate(-13.918 -11.934)" fill="#1976d2"/>
+    </g>
+  </g>
+</svg>

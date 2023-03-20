@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "916240703411",
+    "project_id": "c2c-project1-c6f88",
+    "storage_bucket": "c2c-project1-c6f88.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:916240703411:android:a5e175c79813c7a096f5c6",
+        "android_client_info": {
+          "package_name": "com.goldy.c2c_project1"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "916240703411-fs7dfmf9k3g0omaub9uv3lp9di7fk3h1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBqJpFrip7tQ3TlRwUmh4dIAT73aNYcQRQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "916240703411-fs7dfmf9k3g0omaub9uv3lp9di7fk3h1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
