@@ -95,7 +95,7 @@ class _mywishlistState extends State<mywishlist> {
           builder: (BuildContext context, AsyncSnapshot<dynamic> datashot) {
             if(datashot.hasData){
               psot = datashot.data["savedPosts"];
-              print(psot);
+              // print(psot);
               return Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: StreamBuilder<QuerySnapshot>(
@@ -212,20 +212,6 @@ class _mywishlistState extends State<mywishlist> {
                                                               child: Center(
                                                                   child: SvgPicture
                                                                       .asset('assets/Heart.svg'))
-
-                                                            // ElevatedButton(onPressed: () async {
-                                                            //       await _firestore
-                                                            //           .collection("userProfile")
-                                                            //           .doc(FirebaseAuth.instance.currentUser?.uid)
-                                                            //           .update({
-                                                            //       "savedPosts": FieldValue.arrayRemove([snapshot.data?.docs[index]["postuid"]])});
-                                                            //   // if(datashot.data?["savedPosts"].contains(snapshot.data?.docs[index]["postuid"])){
-                                                            //   //   print("object");
-                                                            //   // }
-                                                            //   // else{
-                                                            //   //   print("no data");
-                                                            //   // }
-                                                            // }, child: Text("LIKEd")),
                                                           ),
                                                         );
                                                       }
@@ -367,7 +353,7 @@ class _mywishlistState extends State<mywishlist> {
 
             }
             else{
-              return const Center(child: Text("asd"),);
+              return const Center(child: Text("..."),);
             }
 
         },

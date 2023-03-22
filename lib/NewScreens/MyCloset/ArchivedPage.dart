@@ -12,7 +12,7 @@ class ArchivedPage extends StatefulWidget {
 
 class _ArchivedPageState extends State<ArchivedPage> {
   getStream(){
-    return FirebaseFirestore.instance.collection("Posts").where("archive" , isEqualTo: "yes").snapshots();
+    return FirebaseFirestore.instance.collection("Posts").where("archive", isEqualTo: "yes").snapshots();
   }
   final _firestore = FirebaseFirestore.instance;
 
@@ -201,45 +201,45 @@ class _ArchivedPageState extends State<ArchivedPage> {
                                   fontWeight:
                                   FontWeight.bold),
                             ),
-                            // const SizedBox(
-                            //   height: 5,
-                            // ),
-                            // SizedBox(
-                            //   height: 30,
-                            //   width: 100,
-                            //   child: ElevatedButton(
-                            //       style: ButtonStyle(
-                            //           shape: MaterialStateProperty.all(
-                            //               const RoundedRectangleBorder(
-                            //                   borderRadius:
-                            //                   BorderRadius.all(
-                            //                       Radius.circular(
-                            //                           50)))),
-                            //           backgroundColor:
-                            //           MaterialStateProperty
-                            //               .all(const Color(
-                            //               0xffFD8A00))),
-                            //       onPressed: () {
-                            //         print( snapshot.data?.docs[index]["archive"]);
-                            //         FirebaseFirestore.instance.collection('Posts').doc(snapshot.data?.docs[index]["postuid"]).update(
-                            //             {
-                            //               "archive" : "yes"
-                            //             });
-                            //         ScaffoldMessenger.of(context)
-                            //             .showSnackBar(SnackBar(
-                            //           content: Text("Item Added to Archive"),
-                            //         ));
-                            //         // .where('archive', isEqualTo: 'no')
-                            //         // .orderBy('time', descending: true)
-                            //
-                            //       },
-                            //       child: const Text(
-                            //         "Add to Card",
-                            //         style: TextStyle(
-                            //             color: Colors.white,
-                            //             fontSize: 12),
-                            //       )),
-                            // ),
+                            const SizedBox(
+                              height: 5,
+                            ),
+                            SizedBox(
+                              height: 30,
+                              width: 110,
+                              child: ElevatedButton(
+                                  style: ButtonStyle(
+                                      shape: MaterialStateProperty.all(
+                                          const RoundedRectangleBorder(
+                                              borderRadius:
+                                              BorderRadius.all(
+                                                  Radius.circular(
+                                                      50)))),
+                                      backgroundColor:
+                                      MaterialStateProperty
+                                          .all(const Color(
+                                          0xffFD8A00))),
+                                  onPressed: () {
+                                    print( snapshot.data?.docs[index]["archive"]);
+                                    FirebaseFirestore.instance.collection('Posts').doc(snapshot.data?.docs[index]["postuid"]).update(
+                                        {
+                                          "archive" : "no"
+                                        });
+                                    ScaffoldMessenger.of(context)
+                                        .showSnackBar(SnackBar(
+                                      content: Text("Item Removed from Archive"),
+                                    ));
+                                    // .where('archive', isEqualTo: 'no')
+                                    // .orderBy('time', descending: true)
+
+                                  },
+                                  child: const Text(
+                                    "Remove from Card",
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: 10),
+                                  )),
+                            ),
 
 
                           ],

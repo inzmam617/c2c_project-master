@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import '../../bottom_icons_icons.dart';
+import '../../chaticons_icons.dart';
 import '../../screens/profile.dart';
 import '../AllPosts/ProductDetails/ProductDetails.dart';
 import '../Cart/CartPage.dart';
@@ -43,7 +44,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
 
   List pages = const [
      HomePage(),
-     CartPage(),
+    TabBarPage(),
      PostPage(),
      MyClosetPage(),
      ProfilePage(),
@@ -125,10 +126,10 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                   BottomNavigationBarItem(
                     label: "Chat",
                     icon: Container(
-                        //padding: const EdgeInsets.all(7),
-                        child: const Icon(BottomIcons.buy
-                            // color: Colors.grey,
-                            )),
+                      //padding: const EdgeInsets.all(7),
+                        child: const Icon(Chaticons.chat
+                          //  color: Colors.grey,
+                        )),
                     //label: '',
                   ),
                   BottomNavigationBarItem(
@@ -199,45 +200,34 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                 const SizedBox(
                   height: 50,
                 ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      const SizedBox(),
-                      // Container(
-                      //   decoration: const BoxDecoration(
-                      //       color: Colors.white,
-                      //       borderRadius:
-                      //           BorderRadius.all(Radius.circular(100))),
-                      //   width: 40,
-                      //   height: 40,
-                      //   child: Center(
-                      //     child: SvgPicture.asset("assets/menu.svg"),
-                      //   ),
-                      // ),
-                      InkWell(
-                        onTap: () {
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (BuildContext context) {
-                            return const TabBarPage();
-                          }));
-                        },
-                        child: Container(
-                          decoration: const BoxDecoration(
-                              color: Colors.white,
-                              borderRadius:
-                                  BorderRadius.all(Radius.circular(100))),
-                          width: 40,
-                          height: 40,
-                          child: Center(
-                            child: SvgPicture.asset("assets/Chat.svg"),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
+                // Padding(
+                //   padding: const EdgeInsets.symmetric(horizontal: 20),
+                //   child: Row(
+                //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //     children: [
+                //       const SizedBox(),
+                //       InkWell(
+                //         onTap: () {
+                //           Navigator.of(context).push(MaterialPageRoute(
+                //               builder: (BuildContext context) {
+                //             return const TabBarPage();
+                //           }));
+                //         },
+                //         child: Container(
+                //           decoration: const BoxDecoration(
+                //               color: Colors.white,
+                //               borderRadius:
+                //                   BorderRadius.all(Radius.circular(100))),
+                //           width: 40,
+                //           height: 40,
+                //           child: Center(
+                //             child: SvgPicture.asset("assets/Chat.svg"),
+                //           ),
+                //         ),
+                //       ),
+                //     ],
+                //   ),
+                // ),
                 const SizedBox(
                   height: 10,
                 ),
@@ -373,8 +363,7 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                                                             image: NetworkImage(
                                                                 (snapshot.data?.docs[
                                                                                 index]
-                                                                            [
-                                                                            "images"]
+                                                                            ["images"]
                                                                         [0]) ??
                                                                     ""),
                                                             fit: BoxFit.cover),
@@ -396,8 +385,8 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                                                                 .collection('userProfile')
                                                                 .doc(FirebaseAuth.instance.currentUser?.uid)
                                                                 .snapshots(),
-                                                            builder: (context, datashot) {
-                                                              if (datashot.hasData) {
+                                                            builder: (context, datashot){
+                                                              if (datashot.hasData){
                                                                 if(datashot.data?["savedPosts"].contains(snapshot.data?.docs[index]["postuid"])){
                                                                   return InkWell(
                                                                     onTap: () async {

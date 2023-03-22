@@ -4,6 +4,7 @@ import 'package:flutter_svg/svg.dart';
 import '../../bottom_icons_icons.dart';
 import '../Cart/CartPage.dart';
 import '../HomePages/Home.dart';
+import '../Message&Notification/TabBar.dart';
 import '../MyCloset/MyClosetPage.dart';
 import '../Post/PostPage.dart';
 import '../ProfilePage/ProfilePage.dart';
@@ -39,7 +40,7 @@ class _SeeAllPostsState extends State<SeeAllPosts> {
 
   List pages = [
     const HomePage(),
-    const CartPage(),
+    const TabBarPage(),
     const PostPage(),
     const MyClosetPage(),
     const ProfilePage(),

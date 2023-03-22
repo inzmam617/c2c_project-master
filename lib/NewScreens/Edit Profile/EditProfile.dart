@@ -1,8 +1,11 @@
 
+import 'dart:io';
+
 import 'package:c2c_project1/screens/storageManager.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
@@ -22,12 +25,24 @@ class _EditProfileState extends State<EditProfile> {
   String Email = "";
   String Address = "";
   int Phone = 0;
-  XFile? uploadImage;
+  File? uploadImage;
   final _firestore = FirebaseFirestore.instance;
   final Storage storage = Storage();
   String editProfile = "";
   String editUsername = '';
-
+//   _getFromCamera() async {
+//     PickedFile? pickedFile = await ImagePicker().getImage(
+//       source: ImageSource.camera,
+//       maxWidth: 1800,
+//       maxHeight: 1800,
+//     );
+//     if (pickedFile != null) {
+//       setState(() {
+//         imageFile = File(pickedFile.path);
+//       });
+//     }
+//   }
+// }
 
   // getProfilePicture() {
   //   FutureBuilder<DocumentSnapshot<Map<String, dynamic>>>(
@@ -76,6 +91,17 @@ class _EditProfileState extends State<EditProfile> {
   //     );
   //   }
   // }
+  File? image;
+  Future pickImage() async {
+    try {
+      final image = await ImagePicker().pickImage(source: ImageSource.gallery);
+      if(image == null) return;
+      final imageTemp = File(image.path);
+      setState(() => this.image = imageTemp);
+    } on PlatformException catch(e) {
+      print('Failed to pick image: $e');
+    }
+  }
 
   // final _formKey? form = _formKey.currentState;
   final _formKey = GlobalKey<FormState>();
@@ -111,15 +137,15 @@ class _EditProfileState extends State<EditProfile> {
                 Container(
                   height: 100,
                   width: 100,
-                  decoration: const BoxDecoration(
+                  decoration:  BoxDecoration(
 
-                    image: DecorationImage(
-                      fit: BoxFit.cover,
-                        image:
-                         AssetImage("assets/istockphoto-1189191538-170667a.jpg" ,)
-                         //    Image.file(uploadImage as File).image
+
+                      image: DecorationImage(
+                          fit: BoxFit.cover,
+                          image:  AssetImage("assets/blank-profile-picture-973460_1280.webp")),
+                         // image:    Image.file(uploadImage!),),
                         // AssetImage("assets/istockphoto-1189191538-170667a.jpg" ,)
-                    ),
+
                     color: Colors.white,
                     borderRadius: BorderRadius.all(Radius.circular(100)),
                     boxShadow: [
@@ -151,43 +177,43 @@ class _EditProfileState extends State<EditProfile> {
                             setState(() {
                               showSpinner = true;
                             });
-                            uploadImage = await ImagePicker()
-                                .pickImage(source: ImageSource.gallery);
-
-                            if (uploadImage == null) {
-                              setState(() {
-                                showSpinner = false;
-                              });
-                              ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(
-                                  content: Text('No File Selected!'),
-                                ),
-                              );
-                            } else {
-                              final path = uploadImage?.path;
-                              final fileName =
-                                  '${FirebaseAuth.instance.currentUser?.email}-${Path.basename(uploadImage!.path)}';
-
-                              print(uploadImage?.path);
-
-                              storage.uploadFile(path.toString(), fileName.toString()).then((value) async {
-
-                                editProfile = await storage.downloadUrl(fileName);
-
-
-                                setState(
-                                      () {
-                                    // getProfilePicture();
-                                    showSpinner = false;
-                                  },
-                                );
-                                ScaffoldMessenger.of(context).showSnackBar(
-                                  const SnackBar(
-                                    content: Text('Profile Updated!'),
-                                  ),
-                                );
-                              });
-                            }
+                            pickImage();
+                            //  PickedFile pickedfile = (await ImagePicker()
+                            //     .pickImage(source: ImageSource.gallery)) as PickedFile;
+                            //
+                            // if (uploadImage == null) {
+                            //   setState(() {
+                            //     showSpinner = false;
+                            //   });
+                            //   ScaffoldMessenger.of(context).showSnackBar(
+                            //     const SnackBar(
+                            //       content: Text('No File Selected!'),
+                            //     ),
+                            //   );
+                            // } else {
+                            //   final path = uploadImage?.path;
+                            //   final fileName = '${FirebaseAuth.instance.currentUser?.email}-${Path.basename(uploadImage!.path)}';
+                            //
+                            //   print(uploadImage?.path);
+                            //
+                            //   storage.uploadFile(path.toString(), fileName.toString()).then((value) async {
+                            //
+                            //     editProfile = await storage.downloadUrl(fileName);
+                            //
+                            //
+                            //     setState(
+                            //           () {
+                            //         // getProfilePicture();
+                            //         showSpinner = false;
+                            //       },
+                            //      );
+                            //     ScaffoldMessenger.of(context).showSnackBar(
+                            //        SnackBar(
+                            //         content: Text('Profile Updated!'+ editProfile),
+                            //       ),
+                            //     );
+                            //   });
+                            // }
                           },
                           icon: const Icon(Icons.camera_alt , color: Colors.white , size: 16,),
                         ),
@@ -247,31 +273,7 @@ class _EditProfileState extends State<EditProfile> {
                             borderSide: BorderSide(color: Colors.green))),
                   ),
                 ),
-                // SizedBox(height: 10),
-                // Padding(
-                //   padding: const EdgeInsets.symmetric(horizontal: 35),
-                //   child: TextFormField(
-                //     onChanged :(value) {
-                //       setState(() {
-                //         Email = value;
-                //       });
-                //     },
-                //     cursorColor: Colors.black,
-                //     cursorWidth: 0.5,
-                //     style: TextStyle(color: Color(0xffC0BDBD), fontSize: 12),
-                //     decoration: InputDecoration(
-                //         contentPadding: EdgeInsets.only(top: 18),
-                //         prefixIcon: SvgPicture.asset(
-                //           "assets/Iconly-Bulk-Message.svg",
-                //           fit: BoxFit.scaleDown,
-                //         ),
-                //         hintText: "Email",
-                //         hintStyle:
-                //             TextStyle(color: Color(0xffC0BDBD), fontSize: 12),
-                //         focusedBorder: UnderlineInputBorder(
-                //             borderSide: BorderSide(color: Colors.green))),
-                //   ),
-                // ),
+
                 const SizedBox(height: 10),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 35),
@@ -373,6 +375,7 @@ class _EditProfileState extends State<EditProfile> {
                             color: Colors.white),
                       )),
                 ),
+                // image != null ? Image.file(image!): Text("No image selected")
               ],
             ),
           ),

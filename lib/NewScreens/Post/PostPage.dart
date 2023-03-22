@@ -5,14 +5,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:image_picker/image_picker.dart';
 import '../../bottom_icons_icons.dart';
+import '../../chaticons_icons.dart';
 import '../Cart/CartPage.dart';
 import '../HomePages/Home.dart';
+import '../Message&Notification/TabBar.dart';
 import '../MyCloset/MyClosetPage.dart';
 import '../ProfilePage/ProfilePage.dart';
 import 'PostProductPage.dart';
 
 late String uploadedDraftImage;
-late File uploadedFile;
+
 List<String> imgRef = [];
 String userAddress = '';
 class PostPage extends StatefulWidget {
@@ -46,7 +48,7 @@ class _PostPageState extends State<PostPage> {
   XFile? uploadImage;
   List pages = [
     const HomePage(),
-    const CartPage(),
+    const TabBarPage(),
     const PostPage(),
     const MyClosetPage(),
     const ProfilePage(),
@@ -115,12 +117,11 @@ class _PostPageState extends State<PostPage> {
                   //label: '',
                 ),
                 BottomNavigationBarItem(
-                  label: "Cart",
+                  label: "Chat",
                   icon: Container(
                     //padding: const EdgeInsets.all(7),
-                      child: const Icon(
-                          BottomIcons.buy
-                        // color: Colors.grey,
+                      child: const Icon(Chaticons.chat
+                        //  color: Colors.grey,
                       )),
                   //label: '',
                 ),
@@ -225,37 +226,37 @@ class _PostPageState extends State<PostPage> {
                           backgroundColor: MaterialStateProperty.all(const Color(0xffFD8A00))
                       ),
                       onPressed: () async {
-                        setState(() {
-                          showSpinner = true;
-                        });
-
-                        uploadImage = await ImagePicker().pickImage(
-                            source: ImageSource.camera, imageQuality: 50);
-
-                        if (uploadImage == null) {
-                          setState(() {
-                            showSpinner = false;
-                          });
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text('No File Selected!'),
-                            ),
-                          );
-                        } else {
-                          final path = uploadImage?.path;
-                          final fileName = Path.basename(path!);
-                          uploadedDraftImage = fileName.toString();
-
-                          uploadedFile = File(path);
-                          setState(() {
-                            showSpinner = false;
-                          });
+                        // setState(() {
+                        //   showSpinner = true;
+                        // });
+                        //
+                        // uploadImage = await ImagePicker().pickImage(
+                        //     source: ImageSource.camera, imageQuality: 50);
+                        //
+                        // if (uploadImage == null) {
+                        //   setState(() {
+                        //     showSpinner = false;
+                        //   });
+                        //   ScaffoldMessenger.of(context).showSnackBar(
+                        //     const SnackBar(
+                        //       content: Text('No File Selected!'),
+                        //     ),
+                        //   );
+                        // } else {
+                        //   final path = uploadImage?.path;
+                        //   final fileName = Path.basename(path!);
+                        //   uploadedDraftImage = fileName.toString();
+                        //
+                        //   uploadedFile = File(path);
+                        //   setState(() {
+                        //     showSpinner = false;
+                        //   });
                           Navigator.push(
                             context,
                             MaterialPageRoute(
                                 builder: (context) => const PostProductPage()),
                           );
-                        }
+                        // }
                         // Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) {
                         //   return const TabBarPage();
                         // }));
@@ -306,37 +307,34 @@ class _PostPageState extends State<PostPage> {
                           backgroundColor: MaterialStateProperty.all(const Color(0xffFD8A00))
                       ),
                       onPressed: () async {
-                        setState(() {
-                          showSpinner = true;
-                        });
-
-                        final uploadImage = await ImagePicker().pickImage(
-                            source: ImageSource.gallery, imageQuality: 25);
-
-                        if (uploadImage == null) {
-                          setState(() {
-                            showSpinner = false;
-                          });
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            const SnackBar(
-                              content: Text('No File Selected!'),
-                            ),
+                        // setState(() {
+                        //   showSpinner = true;
+                        // });
+                        //
+                        // final uploadImage = await ImagePicker().pickImage(
+                        //     source: ImageSource.gallery, imageQuality: 25);
+                        //
+                        // if (uploadImage == null) {
+                        //   setState(() {
+                        //     showSpinner = false;
+                        //   });
+                        //   ScaffoldMessenger.of(context).showSnackBar(
+                        //     const SnackBar(
+                        //       content: Text('No File Selected!'),
+                        //     ),
+                        //   );
+                        // } else {
+                        //   final path = uploadImage.path;
+                        //   final fileName = Path.basename(uploadImage.path);
+                        //   uploadedDraftImage = fileName.toString();
+                        //
+                        //   uploadedFile = File(path);
+                        //   setState(() {
+                        //     showSpinner = false;
+                        //   });
+                          Navigator.push(context,MaterialPageRoute(builder: (context) => const PostProductPage()),
                           );
-                        } else {
-                          final path = uploadImage.path;
-                          final fileName = Path.basename(uploadImage.path);
-                          uploadedDraftImage = fileName.toString();
-
-                          uploadedFile = File(path);
-                          setState(() {
-                            showSpinner = false;
-                          });
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const PostProductPage()),
-                          );
-                        }
+                        // }
                         // Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) {
                         //   return const PostProductPage();
                         // }));

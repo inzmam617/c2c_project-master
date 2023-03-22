@@ -66,6 +66,10 @@ flutter:
     - family: BottomIcons
       fonts:
         - asset: assets/BottomIcons.ttf
+    - family: Chaticons
+      fonts:
+        - asset: assets/Chaticons.ttf
+
 
   assets:
     - images/

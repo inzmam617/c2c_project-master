@@ -144,10 +144,12 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   Widget build(BuildContext context) => Scaffold(
         appBar: AppBar(
+          backgroundColor: const Color(0xffFD8A00),
           leading: IconButton(
             icon: const Icon(Icons.arrow_back),
             onPressed: () {
               Navigator.of(context).pop();
+              print(widget.user2);
               _firestore
                   .collection('userProfile')
                   .doc(user?.uid)
@@ -156,7 +158,7 @@ class _ChatScreenState extends State<ChatScreen> {
           ),
           title: FutureBuilder<DocumentSnapshot<Map<String, dynamic>>>(
             future:
-                _firestore.collection("userProfile").doc(widget.user2).get(),
+                FirebaseFirestore.instance.collection("userProfile").doc(widget.user2).get(),
             builder: (context, dataShot) {
               if (dataShot.hasData) {
                 userName = dataShot.data?.get("username");

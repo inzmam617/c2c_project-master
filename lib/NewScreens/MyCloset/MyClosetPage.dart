@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import '../../bottom_icons_icons.dart';
+import '../../chaticons_icons.dart';
 import '../Cart/CartPage.dart';
 import '../HomePages/Home.dart';
+import '../Message&Notification/TabBar.dart';
 import '../Post/PostPage.dart';
 import '../ProfilePage/ProfilePage.dart';
 import 'ArchivedPage.dart';
@@ -18,7 +20,7 @@ class MyClosetPage extends StatefulWidget  {
 class _MyClosetPageState extends State<MyClosetPage>  with TickerProviderStateMixin {
   List pages = [
     const HomePage(),
-    const CartPage(),
+    const TabBarPage(),
     const PostPage(),
     const MyClosetPage(),
     const ProfilePage(),
@@ -55,12 +57,12 @@ class _MyClosetPageState extends State<MyClosetPage>  with TickerProviderStateMi
           appBar: AppBar(
             centerTitle: true,
             title: const Text("My Closet",style: TextStyle(color: Colors.black,fontSize: 16,fontWeight: FontWeight.bold ),),
-            leading: IconButton(
-              onPressed: (){
-                Navigator.of(context).pop();
-              },
-              icon: const Icon(Icons.arrow_back_rounded,color: Colors.black,),
-            ),
+            // leading: IconButton(
+            //   onPressed: (){
+            //     Navigator.of(context).pop();
+            //   },
+            //   icon: const Icon(Icons.arrow_back_rounded,color: Colors.black,),
+            // ),
             backgroundColor:Colors.white,
             bottom:  TabBar(
               isScrollable: true,
@@ -112,7 +114,7 @@ class _MyClosetPageState extends State<MyClosetPage>  with TickerProviderStateMi
                   bottomLeft: Radius.circular(20)),
               child: BottomNavigationBar(
                 backgroundColor: Colors.white,
-                items: const <BottomNavigationBarItem>[
+                items:  <BottomNavigationBarItem>[
                   BottomNavigationBarItem(
                     label: "Home",
                     icon: Icon(
@@ -122,10 +124,10 @@ class _MyClosetPageState extends State<MyClosetPage>  with TickerProviderStateMi
                     //label: '',
                   ),
                   BottomNavigationBarItem(
-                    label: "Cart",
-                    icon: Icon(BottomIcons.buy
-                        // color: Colors.grey,
-                        ),
+                    label: "Chat",
+                    icon: const Icon(Chaticons.chat
+                      //  color: Colors.grey,
+                    ),
                     //label: '',
                   ),
                   BottomNavigationBarItem(

@@ -10,6 +10,7 @@ import 'package:flutter_svg/svg.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:path/path.dart' as path;
 import '../HomePages/Home.dart';
+import 'PostProductPage.dart';
 // import '../../screens/post_screen.dart';
 
 List<File> imagesToBePosted = [];
@@ -53,7 +54,7 @@ class _PostProductDetailsState extends State<PostProductDetails> {
   final String _postalCode = '';
   final String _country = '';
   // bool showSpinner = false;
-
+  // late File uploadedFile;
   final _formKey = GlobalKey<FormState>();
 
   bool selectedblack = false;
@@ -864,38 +865,12 @@ class _PostProductDetailsState extends State<PostProductDetails> {
                           ),
                           onPressed: () async {
                             setState(() {
-                            //   if (descController.text.isEmpty) {
-                            //     isDescription = false;
-                            //   } else {
-                            //     isDescription = true;
-                            //   }
-                            //   if (localityController.text.isEmpty) {
-                            //     isCity = false;
-                            //   } else {
-                            //     isCity = true;
-                            //   }
-                            //   if (postalCodeController.text.isEmpty) {
-                            //     isPostalCode = false;
-                            //   } else {
-                            //     isPostalCode = true;
-                            //   }
-                            //   if (countryController.text.isEmpty) {
-                            //     isCountry = false;
-                            //   } else {
-                            //     isCountry = true;
-                            //   }
-                            //   if (priceController.text.isNotEmpty &&
-                            //       productPrice >= 10) {
-                            //     isPrice = true;
-                            //   } else {
-                            //     isPrice = false;
-                            //   }
-                            //
+
                               showSpinner = true;
                             });
-                            // showSpinner = true;
+
                             if ((_formKey.currentState!.validate())) {
-                              imagesToBePosted.insert(0, uploadedFile);
+                              imagesToBePosted.insert(0, file!);
                               for (var img in imagesToBePosted) {
                                 var ref = FirebaseStorage.instance.ref().child(
                                     '${user?.email}/${path.basename(img.path)}');
@@ -905,25 +880,15 @@ class _PostProductDetailsState extends State<PostProductDetails> {
                                     print(value);
                                   });
                                 });
-                                // print(user?.uid);
-                                // print(user?.email.toString());
-                                // print(ref.toString());
-                                // print(ref.getDownloadURL().toString());
-                                // print(imgRef);
+
                               }
 
                               userAddress =  '$_cityLocality, $_postalCode, $_country';
-                              // print(userAddress);
-                              firestore.collection('Posts').add({
+                                firestore.collection('Posts').add({
                                 'title': nameController.text,
                                 'productCategory': categoryController.text,
                                 'materialCondition': conditionController.text,
-                                // 'brand': productBrand,
                                 'images': imgRef,
-                                // 'fabric': fabricController.text,
-                                // 'pattern': ,
-                                // 'occasion': productOccasion,
-
                                 'size': size,
                                 'color': color,
                                 'description': descController.text,
@@ -937,28 +902,26 @@ class _PostProductDetailsState extends State<PostProductDetails> {
                                 "savedPosts": FieldValue.arrayUnion([0]),
                                 'archive': 'no',
                               }).then((docRef) => {
-                                  // Get the document ID
                                    documentId = docRef.id,
                                   print("Document ID: $documentId"),
                                 firestore.collection('Posts').doc(documentId).update(
                                     {
                                       "postuid" : documentId
                                     })
-
-                              // Use the document ID as needed
                             });
 
                               print(userAddress.toString());
 
                               setState(() {
+                                file = null;
                                 // // imgRef = "" as List<String>;
                                 // imgRef.clear();
                                 showSpinner = false;
                                 imgRef = [];
-                                Navigator.popUntil(
-                                  context,
-                                  ModalRoute.withName('/home_screen'),
-                                );
+                                // Navigator.popUntil(
+                                //   context,
+                                //   ModalRoute.withName('/home_screen'),
+                                // );
                                 ScaffoldMessenger.of(context)
                                     .showSnackBar(const SnackBar(
                                   content: Text('Posted Successfully'),
@@ -993,10 +956,87 @@ class _PostProductDetailsState extends State<PostProductDetails> {
                               )),
                               backgroundColor: MaterialStateProperty.all(Colors.white)
                           ),
-                          onPressed: (){
-                            // Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) {
-                            //   return const PostProductDetails();
-                            // }));
+                          onPressed: () async {
+                            setState(() {
+
+                              showSpinner = true;
+                            });
+
+                            if ((_formKey.currentState!.validate())) {
+                              imagesToBePosted.insert(0, file!);
+                              for (var img in imagesToBePosted) {
+                                var ref = FirebaseStorage.instance.ref().child(
+                                    '${user?.email}/${path.basename(img.path)}');
+                                await ref.putFile(img).whenComplete(() async {
+                                  await ref.getDownloadURL().then((value) {
+                                    imgRef.add(value);
+                                    print(value);
+                                  });
+                                });
+
+                              }
+
+                              // userAddress =  '$_cityLocality, $_postalCode, $_country';
+                              firestore  .collection('Drafts')
+                                  .doc(FirebaseAuth.instance.currentUser?.uid)
+                                  .collection('Products').add({
+                                'title': nameController.text,
+                                'productCategory': categoryController.text,
+                                'materialCondition': conditionController.text,
+                                'images': imgRef,
+                                'size': size,
+                                'color': color,
+                                'description': descController.text,
+                                'cost': productPrice,
+                                'postedBy':  FirebaseAuth.instance.currentUser?.email,
+                                'uID':  FirebaseAuth.instance.currentUser?.uid,
+                                'address': userAddress,
+                                'onSale': true,
+                                'views': 0,
+                                'time': FieldValue.serverTimestamp(),
+                                "savedPosts": FieldValue.arrayUnion([0]),
+                                'archive': 'no',
+                              }).then((docRef) => {
+                                documentId = docRef.id,
+                                print("Document ID: $documentId"),
+                                firestore.collection('Posts').doc(documentId).update(
+                                    {
+                                      "postuid" : documentId
+                                    })
+                              });
+
+                              print(userAddress.toString());
+
+                              setState(() {
+                                file = null;
+                                // // imgRef = "" as List<String>;
+                                // imgRef.clear();
+                                showSpinner = false;
+                                imgRef = [];
+                                // Navigator.popUntil(
+                                //   context,
+                                //   ModalRoute.withName('/home_screen'),
+                                // );
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(const SnackBar(
+                                  content: Text('Added to drafts!'),
+                                ));
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => const HomePage()),
+                                );
+                              });
+                            } else {
+                              setState(() {
+                                ScaffoldMessenger.of(context)
+                                    .showSnackBar(const SnackBar(
+                                  content: Text(
+                                      'Please check if you have filled all the details properly!'),
+                                ));
+                                showSpinner = false;
+                              });
+                            }
                           }, child: const Text("Save as Draft",style: TextStyle(color: Colors.orange),)))
                 ],
               ),),

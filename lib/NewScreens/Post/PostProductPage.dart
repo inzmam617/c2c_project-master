@@ -13,6 +13,8 @@ class PostProductPage extends StatefulWidget {
   State<PostProductPage> createState() => _PostProductPageState();
 }
 
+File? file;
+
 class _PostProductPageState extends State<PostProductPage> {
 
 
@@ -31,10 +33,10 @@ class _PostProductPageState extends State<PostProductPage> {
       );
     } else {
       final path = uploadImage.path;
-      File file = File(path);
+      file = File(path);
 
       setState(() {
-        _image.add(file);
+        _image.add(file!);
       });
     }
   }
@@ -76,6 +78,7 @@ class _PostProductPageState extends State<PostProductPage> {
                   width: MediaQuery.of(context).size.width / 3,
                   child: InkWell(
                     onTap: (){
+
                       if (counter != 7 && _image.length != 7) {
                         chooseImage();
                         counter += 1;
@@ -170,6 +173,14 @@ class _PostProductPageState extends State<PostProductPage> {
                     ),
                     onPressed: (){
                       imagesToBesPosted = _image;
+                      if(counter == 0){
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text('Please Select Some Images!'),
+                          ),
+                        );
+                      }
+                      else
                       Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) {
                         return const PostProductDetails();
                       }));

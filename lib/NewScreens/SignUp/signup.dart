@@ -260,6 +260,7 @@ class _signupState extends State<signup> {
                           'username': name,
                           'uid': _auth.currentUser?.uid,
                           'email': _auth.currentUser?.email,
+                          "savedPosts" : FieldValue.arrayUnion([0]),
 
                           // 'username': firstName,
                           "lastname" : "No Last Yet",

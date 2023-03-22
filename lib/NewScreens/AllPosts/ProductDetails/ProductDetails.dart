@@ -1,10 +1,12 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
+import '../../../screens/chat_screen.dart';
 import '../../Message&Notification/TabBar.dart';
 
 class ProductDetails extends StatefulWidget {
@@ -684,11 +686,21 @@ class _ProductDetailsState extends State<ProductDetails> {
                                             .all(const Color(0xffFD8A00))
                                     ),
                                     onPressed: () {
-                                      Navigator.of(context).push(
+                                      if(snapshot.data["uid"] == FirebaseAuth.instance.currentUser?.uid)
+                                        {
+                                          ScaffoldMessenger.of(context).showSnackBar(
+                                            const SnackBar(
+                                              content: Text('You Cannot Messege your Self'),
+                                            ),
+                                          );
+                                        }
+                                      else {
+                                        Navigator.of(context).push(
                                           MaterialPageRoute(
                                               builder: (BuildContext context) {
-                                                return const TabBarPage();
+                                                return  ChatScreen(user1: FirebaseAuth.instance.currentUser?.uid, user2: snapshot.data["uid"],);
                                               }));
+                                      }
                                     }, child: const Text("Message")))
 
                           ],

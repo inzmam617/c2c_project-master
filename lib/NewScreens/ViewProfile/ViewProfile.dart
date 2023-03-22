@@ -63,6 +63,9 @@ class _ViewProfileState extends State<ViewProfile> {
                     height: 150,
                     width: 150,
                     decoration: const BoxDecoration(
+                        image: DecorationImage(
+                            fit: BoxFit.cover,
+                            image: AssetImage("assets/blank-profile-picture-973460_1280.webp")),
                         color: Colors.grey,
                         borderRadius: BorderRadius.all(Radius.circular(100))
                     ),

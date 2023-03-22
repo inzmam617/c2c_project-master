@@ -4,11 +4,13 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'dart:math' as math;
 import '../../bottom_icons_icons.dart';
+import '../../chaticons_icons.dart';
 import '../Ask us/askus.dart';
 import '../Cart/CartPage.dart';
 import '../Edit Profile/EditProfile.dart';
 import '../Help/help.dart';
 import '../HomePages/Home.dart';
+import '../Message&Notification/TabBar.dart';
 import '../My Wishlist/mywishlist.dart';
 import '../MyCloset/MyClosetPage.dart';
 import '../Payment Details/carddetail.dart';
@@ -26,7 +28,7 @@ class ProfilePage extends StatefulWidget {
 class _ProfilePageState extends State<ProfilePage> {
   List pages = [
     const HomePage(),
-    const CartPage(),
+    const TabBarPage(),
     const PostPage(),
     const MyClosetPage(),
     const ProfilePage(),
@@ -82,12 +84,12 @@ class _ProfilePageState extends State<ProfilePage> {
                   //label: '',
                 ),
                 BottomNavigationBarItem(
-                  label: "Cart",
+                  label: "Chat",
                   icon: Container(
-                      //padding: const EdgeInsets.all(7),
-                      child: const Icon(BottomIcons.buy
-                          // color: Colors.grey,
-                          )),
+                    //padding: const EdgeInsets.all(7),
+                      child: const Icon(Chaticons.chat
+                        //  color: Colors.grey,
+                      )),
                   //label: '',
                 ),
                 BottomNavigationBarItem(
@@ -136,6 +138,7 @@ class _ProfilePageState extends State<ProfilePage> {
         ),
       ),
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         backgroundColor: const Color(0xffFD8A00),
         elevation: 0.0,
       ),
@@ -158,7 +161,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         ],
                         image: DecorationImage(
                             fit: BoxFit.cover,
-                            image: AssetImage("assets/eight.png")),
+                            image: AssetImage("assets/blank-profile-picture-973460_1280.webp")),
                         borderRadius: BorderRadius.all(Radius.circular(100))),
                     height: 100,
                     width: 100,
