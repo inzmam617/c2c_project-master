@@ -1,7 +1,10 @@
-import 'package:c2c_project1/screens/chat_screen.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_profile_picture/flutter_profile_picture.dart';
+
+import '../../screens/chat_screen.dart';
 
 final _firestore = FirebaseFirestore.instance;
 String toBeUsedID = '';
@@ -15,328 +18,120 @@ class MessagePage extends StatefulWidget {
 }
 
 class _MessagePageState extends State<MessagePage> {
+
+  @override
+  void initState() {
+    getUserBooks();
+    setState(() {
+    });
+  }
+
+
+  void getUserBooks() async {
+    print(9);
+    // await FirebaseFirestore.instance.collection("Messages").get().then((querySnapshot) async {
+    //   querySnapshot.docs.forEach((result) async{
+    //     if(result.get(userIds:"")){
+    //
+    //     }
+    //     print("h:$result");
+    //   });
+    // });
+  }
+
+
+  List allUserList = [];
+  checkIfProfilePicExists(uName, pPic) {
+    if (pPic == '') {
+      return ProfilePicture(
+        name: uName,
+        radius: 30.0,
+        fontsize: 15.0,
+      );
+    } else {
+      return ProfilePicture(
+        name: uName,
+        radius: 30.0,
+        fontsize: 15.0,
+        img: pPic,
+      );
+    }
+  }
+  Future<List> getallUsers()async{
+
+
+    await FirebaseFirestore.instance.collection('Messages') .doc(FirebaseAuth.instance.currentUser?.uid ?? "").collection('Users')
+        .get()
+        .then((qSnap) {
+      if (qSnap.docs.length > 0) {
+        allUserList.clear();
+        qSnap.docs.forEach((element) {
+          allUserList.add(element);
+          //* in future we can also remove friend whom already request sent
+          // allUserList.add(UserModel.fromDocumentSnapshot(element));
+        });
+      }
+    });
+    return allUserList ;
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        // Padding(
-        //   padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 20),
-        //   child: Row(
-        //     crossAxisAlignment: CrossAxisAlignment.start,
-        //     mainAxisAlignment: MainAxisAlignment.start,
-        //     children: [
-        //       Container(
-        //           decoration: const BoxDecoration(
-        //             color: Colors.white,
-        //             borderRadius: BorderRadius.all(Radius.circular(100)),
-        //             boxShadow: [
-        //               BoxShadow(
-        //                 color: Colors.grey,
-        //                 blurRadius: 5.0
-        //               )
-        //             ]
-        //           ),
-        //         height: 30,
-        //         width: 60,
-        //         child: const Center(child: Text("ALL",style: TextStyle(color: Colors.black,fontSize: 10),)),
-        //       ),
-        //       const SizedBox(width: 5,),
-        //       Container(
-        //         decoration: const BoxDecoration(
-        //             color: Colors.white,
-        //             borderRadius: BorderRadius.all(Radius.circular(100)),
-        //             boxShadow: [
-        //               BoxShadow(
-        //                   color: Colors.grey,
-        //                   blurRadius: 5.0
-        //               )
-        //             ]
-        //         ),
-        //         height: 30,
-        //         width: 60,
-        //         child: const Center(child: Text("READ",style: TextStyle(color: Colors.grey,fontSize: 10),)),
-        //       ),
-        //       const SizedBox(width: 5,),
-        //       Container(
-        //         decoration: const BoxDecoration(
-        //             color: Colors.white,
-        //             borderRadius: BorderRadius.all(Radius.circular(100)),
-        //             boxShadow: [
-        //               BoxShadow(
-        //                   color: Colors.grey,
-        //                   blurRadius: 5.0
-        //               )
-        //             ]
-        //         ),
-        //         height: 30,
-        //         width: 60,
-        //         child: const Center(child: Text("Unread",style: TextStyle(color: Colors.grey,fontSize: 10),)),
-        //       ),
-        //     ],
-        //   ),
-        // ),
+       StreamBuilder<QuerySnapshot>(
+         stream: FirebaseFirestore.instance.collection("Messages").where('userIds', arrayContains: '${FirebaseAuth.instance.currentUser?.uid}').snapshots(),
+         builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+           if(snapshot.hasData){
+             final snaps = snapshot.data?.docs;
+             List<Widget> list = [] ;
+             for(var i in snaps!){
+               list.add(TextButton(
+                 onPressed: () {
+                   toBeUsedID = i['uID'];
+                   toBeContactedUser = i['userName'];
 
-        Expanded(
-          child: StreamBuilder<QuerySnapshot>(
-              stream: FirebaseFirestore.instance.collection("Messages").doc(FirebaseAuth.instance.currentUser?.uid).collection("Users").snapshots(),
-              builder: (context, snapshot) {
-                if(snapshot.hasData) {
-                  return ListView.builder(
-                    itemCount: 2,
-                    physics: const ScrollPhysics(),
-                    shrinkWrap: true,
-                    itemBuilder: (BuildContext context, int index) {
-                      return Padding(
-                        padding: const EdgeInsets.symmetric(vertical: 8.0),
-                        child: InkWell(
-                          onTap: () {
-                            print(snapshot.data?.docs[index]);
-                            // Navigator.of(context).push(MaterialPageRoute(
-                            //     builder: (BuildContext context) {
-                            //       return ChatScreen(
-                            //           user1: FirebaseAuth.instance.currentUser?.uid,
-                            //           user2: "986wi6UxxEeUqDy5E9y46DRRuEr2");
-                            //     }));
-                          },
-                          child: Container(
-                              width: MediaQuery
-                                  .of(context)
-                                  .size
-                                  .width,
-                              height: 100,
-                              decoration: const BoxDecoration(
-                                  color: Colors.white,
-                                  boxShadow: [
-                                    BoxShadow(color: Colors.grey, blurRadius: 3.5),
+                   _firestore
+                       .collection('userProfile')
+                       .doc(FirebaseAuth.instance.currentUser?.uid)
+                       .update({'chattingWith': toBeUsedID});
 
-                                  ]
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
-                                child: Column(
-                                  children: [
-                                    const Align(
-                                      alignment: Alignment.topRight,
-                                      child: Text("9:00",
-                                        style: TextStyle(color: Colors.black),),
-                                    ),
-                                    Row(
-                                      children: [
-                                        Align(
-                                          alignment: Alignment.topLeft,
-                                          child: Container(
-                                            height: 60,
-                                            width: 60,
-                                            decoration: const BoxDecoration(
+                   Navigator.of(context, rootNavigator: true).push(
+                     // ensures fullscreen
+                     CupertinoPageRoute(
+                       builder: (BuildContext context) {
+                         return ChatScreen(
+                           user1: FirebaseAuth.instance.currentUser?.uid,
+                           user2: toBeUsedID,
+                         );
+                       },
+                     ),
+                   );
+                 },
+                 child: ListTile(
+                     title: Text(
+                       i['userName'],
+                     ),
+                     contentPadding:
+                     const EdgeInsets.fromLTRB(0.0, 5.0, 0.0, 5.0),
+                     leading: checkIfProfilePicExists(
+                         i['userName'], i['userProfile'])),
+               ),);
+             }
+             return ListView(
+               shrinkWrap: true,
+               children: list,
+             );
+           }
+           else{
+             return CircularProgressIndicator();
+           }
 
-                                                image: DecorationImage(
-                                                    fit: BoxFit.cover,
-                                                    image: AssetImage(
-                                                      "assets/dressThirteen.png",)),
-                                                borderRadius: BorderRadius.all(
-                                                    Radius.circular(100))
-                                            ),
-                                          ),
-                                        ),
-                                        Padding(
-                                          padding: const EdgeInsets.symmetric(
-                                              horizontal: 8.0),
-                                          child: Column(
-                                            crossAxisAlignment: CrossAxisAlignment
-                                                .start,
-                                            children: const [
-                                              Text("Person 1", style: TextStyle(
-                                                  color: Colors.black),),
-                                              Text(
-                                                "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-                                                style: TextStyle(
-                                                    color: Colors.black,
-                                                    fontSize: 10),),
-                                            ],
-                                          ),
-                                        )
-                                      ],
-                                    ),
+       },)
 
-                                  ],
-                                ),
-                              )
-                          ),
-                        ),
-                      );
-                    },);
-                }
-                else{
-                  return const Center(child: Text("No Chats"),);
-                }
-              }
-          ),
-        )
       ],
     );
   }
 }
-
-
-
-// Widget MessagePage(){
-//   return Column(
-//     children: [
-//       // Padding(
-//       //   padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 20),
-//       //   child: Row(
-//       //     crossAxisAlignment: CrossAxisAlignment.start,
-//       //     mainAxisAlignment: MainAxisAlignment.start,
-//       //     children: [
-//       //       Container(
-//       //           decoration: const BoxDecoration(
-//       //             color: Colors.white,
-//       //             borderRadius: BorderRadius.all(Radius.circular(100)),
-//       //             boxShadow: [
-//       //               BoxShadow(
-//       //                 color: Colors.grey,
-//       //                 blurRadius: 5.0
-//       //               )
-//       //             ]
-//       //           ),
-//       //         height: 30,
-//       //         width: 60,
-//       //         child: const Center(child: Text("ALL",style: TextStyle(color: Colors.black,fontSize: 10),)),
-//       //       ),
-//       //       const SizedBox(width: 5,),
-//       //       Container(
-//       //         decoration: const BoxDecoration(
-//       //             color: Colors.white,
-//       //             borderRadius: BorderRadius.all(Radius.circular(100)),
-//       //             boxShadow: [
-//       //               BoxShadow(
-//       //                   color: Colors.grey,
-//       //                   blurRadius: 5.0
-//       //               )
-//       //             ]
-//       //         ),
-//       //         height: 30,
-//       //         width: 60,
-//       //         child: const Center(child: Text("READ",style: TextStyle(color: Colors.grey,fontSize: 10),)),
-//       //       ),
-//       //       const SizedBox(width: 5,),
-//       //       Container(
-//       //         decoration: const BoxDecoration(
-//       //             color: Colors.white,
-//       //             borderRadius: BorderRadius.all(Radius.circular(100)),
-//       //             boxShadow: [
-//       //               BoxShadow(
-//       //                   color: Colors.grey,
-//       //                   blurRadius: 5.0
-//       //               )
-//       //             ]
-//       //         ),
-//       //         height: 30,
-//       //         width: 60,
-//       //         child: const Center(child: Text("Unread",style: TextStyle(color: Colors.grey,fontSize: 10),)),
-//       //       ),
-//       //     ],
-//       //   ),
-//       // ),
-//
-//       Expanded(
-//         child: StreamBuilder<QuerySnapshot>(
-//           stream: FirebaseFirestore.instance.collection("Messages").doc(FirebaseAuth.instance.currentUser?.uid).collection("Users").snapshots(),
-//           builder: (context, snapshot) {
-//             if(snapshot.hasData) {
-//               return ListView.builder(
-//                 itemCount: 2,
-//                 physics: const ScrollPhysics(),
-//                 shrinkWrap: true,
-//                 itemBuilder: (BuildContext context, int index) {
-//                   return Padding(
-//                     padding: const EdgeInsets.symmetric(vertical: 8.0),
-//                     child: InkWell(
-//                       onTap: () {
-//                         print(snapshot.data?.docs[index]);
-//                         // Navigator.of(context).push(MaterialPageRoute(
-//                         //     builder: (BuildContext context) {
-//                         //       return ChatScreen(
-//                         //           user1: FirebaseAuth.instance.currentUser?.uid,
-//                         //           user2: "986wi6UxxEeUqDy5E9y46DRRuEr2");
-//                         //     }));
-//                       },
-//                       child: Container(
-//                           width: MediaQuery
-//                               .of(context)
-//                               .size
-//                               .width,
-//                           height: 100,
-//                           decoration: const BoxDecoration(
-//                               color: Colors.white,
-//                               boxShadow: [
-//                                 BoxShadow(color: Colors.grey, blurRadius: 3.5),
-//
-//                               ]
-//                           ),
-//                           child: Padding(
-//                             padding: const EdgeInsets.all(8.0),
-//                             child: Column(
-//                               children: [
-//                                 const Align(
-//                                   alignment: Alignment.topRight,
-//                                   child: Text("9:00",
-//                                     style: TextStyle(color: Colors.black),),
-//                                 ),
-//                                 Row(
-//                                   children: [
-//                                     Align(
-//                                       alignment: Alignment.topLeft,
-//                                       child: Container(
-//                                         height: 60,
-//                                         width: 60,
-//                                         decoration: const BoxDecoration(
-//
-//                                             image: DecorationImage(
-//                                                 fit: BoxFit.cover,
-//                                                 image: AssetImage(
-//                                                   "assets/dressThirteen.png",)),
-//                                             borderRadius: BorderRadius.all(
-//                                                 Radius.circular(100))
-//                                         ),
-//                                       ),
-//                                     ),
-//                                     Padding(
-//                                       padding: const EdgeInsets.symmetric(
-//                                           horizontal: 8.0),
-//                                       child: Column(
-//                                         crossAxisAlignment: CrossAxisAlignment
-//                                             .start,
-//                                         children: const [
-//                                           Text("Person 1", style: TextStyle(
-//                                               color: Colors.black),),
-//                                           Text(
-//                                             "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-//                                             style: TextStyle(
-//                                                 color: Colors.black,
-//                                                 fontSize: 10),),
-//                                         ],
-//                                       ),
-//                                     )
-//                                   ],
-//                                 ),
-//
-//                               ],
-//                             ),
-//                           )
-//                       ),
-//                     ),
-//                   );
-//                 },);
-//             }
-//             else{
-//               return const Center(child: Text("No Chats"),);
-//             }
-//           }
-//         ),
-//       )
-//     ],
-//   );
-// }
-
 

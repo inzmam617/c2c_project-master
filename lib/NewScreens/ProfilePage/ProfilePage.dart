@@ -1,8 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'dart:math' as math;
+import '../../Services.dart';
 import '../../bottom_icons_icons.dart';
 import '../../chaticons_icons.dart';
 import '../Ask us/askus.dart';
@@ -26,6 +29,13 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+  Future<void> signOut() async {
+    const secureStorage = FlutterSecureStorage();
+    await secureStorage.delete(key: 'uid');
+
+    await GoogleLogin().signOutFromGoogle();
+    await FirebaseAuth.instance.signOut();
+  }
   List pages = [
     const HomePage(),
     const TabBarPage(),
@@ -185,19 +195,57 @@ class _ProfilePageState extends State<ProfilePage> {
             ),
             listtile("View Profile", "Profile",const ViewProfile()),
             listtile("My WishList", "YellowHeart",const mywishlist()),
-            listtile("Manage Payments", "Wallet",const carddetail()),
-            listtile("Got Questions? Ask us Here!", "More Square",const askus()),
+            // listtile("Manage Payments", "Wallet",const carddetail()),
+            // listtile("Got Questions? Ask us Here!", "More Square",const askus()),
             listtile("Help", "Info Square",const help()),
             Padding(
-              padding: const EdgeInsets.symmetric(vertical: 10),
+              padding: const EdgeInsets.symmetric(vertical: 12),
               child: InkWell(
                 onTap: () {
-                  showSpinner = true;
-                  FirebaseAuth.instance.signOut();
-                  Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) {
-                    return const SignIn();
-                  }));
-                  showSpinner = false;
+                  setState(() {
+                    showDialog(
+                      context: context,
+                      builder: (ctx) => AlertDialog(
+                        title: const Text("Confirm Logout"),
+                        content: const Text("Do you really want to logout?"),
+                        actions: <Widget>[
+                          TextButton(
+                            onPressed: () {
+                              try {
+                                signOut().then((value) async {
+                                  await Future.delayed(
+                                      const Duration(seconds: 2));
+                                });
+                                SystemChannels.platform
+                                    .invokeMethod<void>('SystemNavigator.pop');
+                              } catch (e) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text(
+                                        'Something Went Wrong! Logging out failed.'),
+                                  ),
+                                );
+                              }
+                              Navigator.of(ctx).pop();
+                            },
+                            child: const Text("Yes"),
+                          ),
+                          TextButton(
+                            onPressed: () {
+                              Navigator.of(ctx).pop();
+                            },
+                            child: const Text("No"),
+                          )
+                        ],
+                      ),
+                    );
+                  });
+                  // showSpinner = true;
+                  // FirebaseAuth.instance.signOut();
+                  // Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) {
+                  //   return const SignIn();
+                  // }));
+                  // showSpinner = false;
                 },
                 child: Container(
                   height: 35,
@@ -229,7 +277,6 @@ class _ProfilePageState extends State<ProfilePage> {
                 ),
               ),
             ),
-            // listtile("Logout", "Logout",const SignIn())
           ],
         ),
       ),
@@ -238,7 +285,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   Widget listtile(text, image, page) {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 10),
+      padding: const EdgeInsets.symmetric(vertical: 12),
       child: InkWell(
         onTap: () {
          Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) {

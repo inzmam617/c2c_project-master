@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../../bottom_icons_icons.dart';
 import '../../chaticons_icons.dart';
 // import '../../screens/post_screen.dart';
+import '../../components/inbox_card.dart';
 import '../HomePages/Home.dart';
 import '../MyCloset/MyClosetPage.dart';
 import '../Post/PostPage.dart';
@@ -21,6 +22,7 @@ class TabBarPage extends StatefulWidget {
 class _TabBarPageState extends State<TabBarPage> with TickerProviderStateMixin {
 
   List<Widget> newpages = [
+    // InboxChats(),
     MessagePage(),
     NotificationPage(),
   ];

@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:firebase_storage/firebase_storage.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:path/path.dart' as Path;
 import 'package:c2c_project1/components/rounded_button.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -61,7 +62,7 @@ class _ChatScreenState extends State<ChatScreen> {
         headers: <String, String>{
           'Content-Type': 'application/json',
           'Authorization':
-              'key=AAAA1VQzn7M:APA91bF1eQWHZHE6oqvbCkiirYFG1HKfUGIxVa8MSC3mSCDLh4qW1woXhkXH7kZ-mshwjPfMv554pYqcX5B53XvZ6ExCCeV1bpnDsnhBy87VAYCpcZTgAY0iSbR2yQSdSRSNQsPcoY4L',
+          'key=AAAA1VQzn7M:APA91bF1eQWHZHE6oqvbCkiirYFG1HKfUGIxVa8MSC3mSCDLh4qW1woXhkXH7kZ-mshwjPfMv554pYqcX5B53XvZ6ExCCeV1bpnDsnhBy87VAYCpcZTgAY0iSbR2yQSdSRSNQsPcoY4L',
         },
         body: jsonEncode(
           <String, dynamic>{
@@ -143,297 +144,352 @@ class _ChatScreenState extends State<ChatScreen> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
-        appBar: AppBar(
-          backgroundColor: const Color(0xffFD8A00),
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back),
-            onPressed: () {
-              Navigator.of(context).pop();
-              print(widget.user2);
-              _firestore
-                  .collection('userProfile')
-                  .doc(user?.uid)
-                  .update({'chattingWith': null});
-            },
-          ),
-          title: FutureBuilder<DocumentSnapshot<Map<String, dynamic>>>(
-            future:
-                FirebaseFirestore.instance.collection("userProfile").doc(widget.user2).get(),
-            builder: (context, dataShot) {
-              if (dataShot.hasData) {
-                userName = dataShot.data?.get("username");
-                userStatus = dataShot.data?.get("status");
-                userProfile = dataShot.data?.get("profilePicture");
+    appBar: AppBar(
+      backgroundColor: const Color(0xffFD8A00),
+      leading: IconButton(
+        icon: const Icon(Icons.arrow_back),
+        onPressed: () {
+          Navigator.of(context).pop();
+          print(widget.user2);
+          _firestore
+              .collection('userProfile')
+              .doc(user?.uid)
+              .update({'chattingWith': null});
+        },
+      ),
+      title: FutureBuilder<DocumentSnapshot<Map<String, dynamic>>>(
+        future:
+        FirebaseFirestore.instance.collection("userProfile").doc(widget.user2).get(),
+        builder: (context, dataShot) {
+          if (dataShot.hasData) {
+            // FirebaseFirestore.instance.collection("Chats").add({
+            //
+            // }
+            // );
 
-                return Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(userName),
-                    SizedBox(
-                      height: MediaQuery.of(context).size.width * 0.01,
-                    ),
-                    Text(
-                      userStatus,
-                      style: const TextStyle(fontSize: 13.0),
-                    ),
-                  ],
-                );
-              }
-              return const Text(
-                '',
-                style: TextStyle(fontSize: 10.0),
-              );
-            },
-          ),
+            userName = dataShot.data?.get("username");
+            userStatus = dataShot.data?.get("status");
+            // userProfile = dataShot.data?.get("profilePicture");
+
+            return Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(userName),
+                SizedBox(
+                  height: MediaQuery.of(context).size.width * 0.01,
+                ),
+                Text(
+                  userStatus,
+                  style: const TextStyle(fontSize: 13.0),
+                ),
+              ],
+            );
+          }
+          return const Text(
+            '',
+            style: TextStyle(fontSize: 10.0),
+          );
+        },
+      ),
+    ),
+    body: Column(
+      children: <Widget>[
+        MessagesStream(
+          messageStream: _firestore
+              .collection('Messages')
+              .doc(user?.uid)
+              .collection('Users')
+              .doc(createChatRoomID(widget.user1, widget.user2))
+              .collection('Chats')
+              .orderBy('time', descending: false)
+              .snapshots(),
         ),
-        body: Column(
+        // Visibility(
+        //   visible: visCheck,
+        //   child: Row(
+        //     children: [
+        //       Expanded(
+        //         child: Padding(
+        //           padding: EdgeInsets.all(
+        //               MediaQuery.of(context).size.width * 0.02),
+        //           child: RoundedButton(
+        //             title: txt1,
+        //             color: Colors.white,
+        //             onPressed: () {
+        //               messageText = txt1;
+        //               _firestore
+        //                   .collection('Messages')
+        //                   .doc(widget.user1)
+        //                   .collection('Users')
+        //                   .doc(createChatRoomID(widget.user1, widget.user2))
+        //                   .collection('Chats')
+        //                   .add({
+        //                 'text': messageText,
+        //                 'description': {},
+        //                 'sender': user?.email,
+        //                 'type': 'text',
+        //                 'time': FieldValue.serverTimestamp(),
+        //               });
+        //               _firestore
+        //                   .collection('Messages')
+        //                   .doc(widget.user2)
+        //                   .collection('Users')
+        //                   .doc(createChatRoomID(widget.user1, widget.user2))
+        //                   .collection('Chats')
+        //                   .add({
+        //                 'text': messageText,
+        //                 'description': {},
+        //                 'sender': toBeContactedUser,
+        //                 'type': 'text',
+        //                 'time': FieldValue.serverTimestamp(),
+        //               });
+        //
+        //               _firestore
+        //                   .collection("Messages")
+        //                   .doc(user?.uid)
+        //                   .collection("Users")
+        //                   .doc(createChatRoomID(widget.user1, widget.user2))
+        //                   .update({
+        //                 'time': FieldValue.serverTimestamp(),
+        //               });
+        //
+        //               _firestore
+        //                   .collection("Messages")
+        //                   .doc(widget.user2)
+        //                   .collection("Users")
+        //                   .doc(createChatRoomID(widget.user1, widget.user2))
+        //                   .update({
+        //                 'time': FieldValue.serverTimestamp(),
+        //               });
+        //
+        //               setState(() {
+        //                 if (txt1 == 'I want to buy it!') {
+        //                   visCheck = true;
+        //                 } else {
+        //                   visCheck = false;
+        //                 }
+        //                 txt1 = 'Payment Method?';
+        //               });
+        //             },
+        //             textColor: Colors.lightBlueAccent,
+        //             fontSize: kFontSize,
+        //           ),
+        //         ),
+        //       ),
+        //       Expanded(
+        //         child: Padding(
+        //           padding: EdgeInsets.all(
+        //               MediaQuery.of(context).size.width * 0.02),
+        //           child: RoundedButton(
+        //             title: txt2,
+        //             color: Colors.white,
+        //             onPressed: () {
+        //               messageText = txt2;
+        //               _firestore
+        //                   .collection('Messages')
+        //                   .doc(widget.user1)
+        //                   .collection('Users')
+        //                   .doc(createChatRoomID(widget.user1, widget.user2))
+        //                   .collection('Chats')
+        //                   .add({
+        //                 'text': messageText,
+        //                 'description': {},
+        //                 'sender': user?.email,
+        //                 'type': 'text',
+        //                 'time': FieldValue.serverTimestamp(),
+        //               });
+        //               _firestore
+        //                   .collection('Messages')
+        //                   .doc(toBeUsedID)
+        //                   .collection('Users')
+        //                   .doc(createChatRoomID(user?.uid, toBeUsedID))
+        //                   .collection('Chats')
+        //                   .add(
+        //                 {
+        //                   'text': messageText,
+        //                   'description': {},
+        //                   'sender': toBeContactedUser,
+        //                   'type': 'text',
+        //                   'time': FieldValue.serverTimestamp(),
+        //                 },
+        //               );
+        //
+        //               _firestore
+        //                   .collection("Messages")
+        //                   .doc(user?.uid)
+        //                   .collection("Users")
+        //                   .doc(createChatRoomID(widget.user1, widget.user2))
+        //                   .update({
+        //                 'time': FieldValue.serverTimestamp(),
+        //               });
+        //
+        //               _firestore
+        //                   .collection("Messages")
+        //                   .doc(widget.user2)
+        //                   .collection("Users")
+        //                   .doc(createChatRoomID(widget.user1, widget.user2))
+        //                   .update({
+        //                 'time': FieldValue.serverTimestamp(),
+        //               });
+        //
+        //               setState(() {
+        //                 if (txt1 == 'Can we meet?') {
+        //                   visCheck = true;
+        //                 } else {
+        //                   visCheck = false;
+        //                 }
+        //                 txt2 = 'How much?';
+        //               });
+        //             },
+        //             textColor: Colors.lightBlueAccent,
+        //             fontSize: kFontSize,
+        //           ),
+        //         ),
+        //       ),
+        //     ],
+        //   ),
+        // ),
+        Row(
           children: <Widget>[
-            MessagesStream(
-              messageStream: _firestore
-                  .collection('Messages')
-                  .doc(user?.uid)
-                  .collection('Users')
-                  .doc(createChatRoomID(widget.user1, widget.user2))
-                  .collection('Chats')
-                  .orderBy('time', descending: false)
-                  .snapshots(),
-            ),
-            Visibility(
-              visible: visCheck,
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Padding(
-                      padding: EdgeInsets.all(
-                          MediaQuery.of(context).size.width * 0.02),
-                      child: RoundedButton(
-                        title: txt1,
-                        color: Colors.white,
+            // Expanded(
+            //   flex: 2,
+            //   child: Align(
+            //     alignment: Alignment.bottomCenter,
+            //     child: Padding(
+            //       padding: const EdgeInsets.symmetric(horizontal: 20),
+            //       child: Container(
+            //         decoration: const BoxDecoration(
+            //             color: Colors.white,
+            //             borderRadius: BorderRadius.all(Radius.circular(32)),
+            //             boxShadow: [
+            //               BoxShadow(
+            //                   blurRadius: 5,
+            //                   color: Colors.grey,
+            //                   offset: Offset(1.0, 2.0))
+            //             ]),
+            //         height: 50,
+            //         width: 400,
+            //         child: TextFormField(
+            //           controller: messageTextController,
+            //           onChanged: (value) {
+            //             messageText = value;
+            //           },
+            //           decoration: InputDecoration(
+            //               contentPadding: const EdgeInsets.only(top: 15),
+            //               hintText: ("Type your message here.."),
+            //               suffixIcon: IconButton(
+            //               icon: const Icon(Icons.image_sharp),
+            //               onPressed: () {
+            //               getImage();
+            //               },
+            //               ),
+            //               border: InputBorder.none),
+            //         ),
+            //       ),
+            //     ),
+            //   ),
+            // ),
+            Expanded(
+              child: Container(
+                decoration: const BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.all(Radius.circular(5)),
+                    boxShadow: [
+                      BoxShadow(
+                          blurRadius: 5,
+                          color: Colors.grey,
+                          offset: Offset(1.0, 2.0))
+                    ]),
+                child: TextField(
+                  controller: messageTextController,
+                  onChanged: (value) {
+                    messageText = value;
+                  },
+                  decoration: kMessageTextFieldDecoration.copyWith(
+                      suffixIcon: IconButton(
+                        icon: const Icon(Icons.image_sharp),
                         onPressed: () {
-                          messageText = txt1;
-                          _firestore
-                              .collection('Messages')
-                              .doc(widget.user1)
-                              .collection('Users')
-                              .doc(createChatRoomID(widget.user1, widget.user2))
-                              .collection('Chats')
-                              .add({
-                            'text': messageText,
-                            'description': {},
-                            'sender': user?.email,
-                            'type': 'text',
-                            'time': FieldValue.serverTimestamp(),
-                          });
-                          _firestore
-                              .collection('Messages')
-                              .doc(widget.user2)
-                              .collection('Users')
-                              .doc(createChatRoomID(widget.user1, widget.user2))
-                              .collection('Chats')
-                              .add({
-                            'text': messageText,
-                            'description': {},
-                            'sender': toBeContactedUser,
-                            'type': 'text',
-                            'time': FieldValue.serverTimestamp(),
-                          });
-
-                          _firestore
-                              .collection("Messages")
-                              .doc(user?.uid)
-                              .collection("Users")
-                              .doc(createChatRoomID(widget.user1, widget.user2))
-                              .update({
-                            'time': FieldValue.serverTimestamp(),
-                          });
-
-                          _firestore
-                              .collection("Messages")
-                              .doc(widget.user2)
-                              .collection("Users")
-                              .doc(createChatRoomID(widget.user1, widget.user2))
-                              .update({
-                            'time': FieldValue.serverTimestamp(),
-                          });
-
-                          setState(() {
-                            if (txt1 == 'I want to buy it!') {
-                              visCheck = true;
-                            } else {
-                              visCheck = false;
-                            }
-                            txt1 = 'Payment Method?';
-                          });
+                          getImage();
                         },
-                        textColor: Colors.lightBlueAccent,
-                        fontSize: kFontSize,
-                      ),
-                    ),
-                  ),
-                  Expanded(
-                    child: Padding(
-                      padding: EdgeInsets.all(
-                          MediaQuery.of(context).size.width * 0.02),
-                      child: RoundedButton(
-                        title: txt2,
-                        color: Colors.white,
-                        onPressed: () {
-                          messageText = txt2;
-                          _firestore
-                              .collection('Messages')
-                              .doc(widget.user1)
-                              .collection('Users')
-                              .doc(createChatRoomID(widget.user1, widget.user2))
-                              .collection('Chats')
-                              .add({
-                            'text': messageText,
-                            'description': {},
-                            'sender': user?.email,
-                            'type': 'text',
-                            'time': FieldValue.serverTimestamp(),
-                          });
-                          _firestore
-                              .collection('Messages')
-                              .doc(toBeUsedID)
-                              .collection('Users')
-                              .doc(createChatRoomID(user?.uid, toBeUsedID))
-                              .collection('Chats')
-                              .add(
-                            {
-                              'text': messageText,
-                              'description': {},
-                              'sender': toBeContactedUser,
-                              'type': 'text',
-                              'time': FieldValue.serverTimestamp(),
-                            },
-                          );
-
-                          _firestore
-                              .collection("Messages")
-                              .doc(user?.uid)
-                              .collection("Users")
-                              .doc(createChatRoomID(widget.user1, widget.user2))
-                              .update({
-                            'time': FieldValue.serverTimestamp(),
-                          });
-
-                          _firestore
-                              .collection("Messages")
-                              .doc(widget.user2)
-                              .collection("Users")
-                              .doc(createChatRoomID(widget.user1, widget.user2))
-                              .update({
-                            'time': FieldValue.serverTimestamp(),
-                          });
-
-                          setState(() {
-                            if (txt1 == 'Can we meet?') {
-                              visCheck = true;
-                            } else {
-                              visCheck = false;
-                            }
-                            txt2 = 'How much?';
-                          });
-                        },
-                        textColor: Colors.lightBlueAccent,
-                        fontSize: kFontSize,
-                      ),
-                    ),
-                  ),
-                ],
+                      )),
+                ),
               ),
             ),
-            Row(
-              children: <Widget>[
-                Expanded(
-                  child: TextField(
-                    controller: messageTextController,
-                    onChanged: (value) {
-                      messageText = value;
-                    },
-                    decoration: kMessageTextFieldDecoration.copyWith(
-                        suffixIcon: IconButton(
-                      icon: const Icon(Icons.image_sharp),
-                      onPressed: () {
-                        getImage();
+            Center(
+              child:  TextButton(
+                  onPressed: () async {
+                    try {
+                      DocumentSnapshot data = await _firestore
+                          .collection("userProfile")
+                          .doc(widget.user2)
+                          .get();
+
+                      sendPushNotifications(
+                          data['token'], userName, messageText);
+                    } catch (e) {
+                      print(e);
+                    }
+
+                    messageTextController.clear();
+
+                    _firestore
+                        .collection('Messages')
+                        .doc(widget.user1)
+                        .collection('Users')
+                        .doc(createChatRoomID(widget.user1, widget.user2))
+                        .collection('Chats')
+                        .add(
+                      {
+                        'text': messageText,
+                        'description': {},
+                        'sender': user?.email,
+                        'type': 'text',
+                        'time': FieldValue.serverTimestamp(),
                       },
-                    )),
+                    );
+                    _firestore
+                        .collection('Messages')
+                        .doc(widget.user2)
+                        .collection('Users')
+                        .doc(createChatRoomID(widget.user1, widget.user2))
+                        .collection('Chats')
+                        .add(
+                      {
+                        'text': messageText,
+                        'description': {},
+                        'sender': toBeContactedUser,
+                        'type': 'text',
+                        'time': FieldValue.serverTimestamp(),
+                      },
+                    );
+                    _firestore
+                        .collection("Messages")
+                        .doc(user?.uid)
+                        .collection("Users")
+                        .doc(createChatRoomID(widget.user1, widget.user2))
+                        .update({
+                      'time': FieldValue.serverTimestamp(),
+                    });
+
+                    _firestore
+                        .collection("Messages")
+                        .doc(widget.user2)
+                        .collection("Users")
+                        .doc(createChatRoomID(widget.user1, widget.user2))
+                        .update({
+                      'time': FieldValue.serverTimestamp(),
+                    });
+                  },
+                  child: const Text(
+                    'Send',
+                    style: kSendButtonTextStyle,
                   ),
                 ),
-                Center(
-                  child: TextButton(
-                    onPressed: () async {
-                      try {
-                        DocumentSnapshot data = await _firestore
-                            .collection("userProfile")
-                            .doc(widget.user2)
-                            .get();
 
-                        sendPushNotifications(
-                            data['token'], userName, messageText);
-                      } catch (e) {
-                        print(e);
-                      }
-
-                      messageTextController.clear();
-
-                      _firestore
-                          .collection('Messages')
-                          .doc(widget.user1)
-                          .collection('Users')
-                          .doc(createChatRoomID(widget.user1, widget.user2))
-                          .collection('Chats')
-                          .add(
-                        {
-                          'text': messageText,
-                          'description': {},
-                          'sender': user?.email,
-                          'type': 'text',
-                          'time': FieldValue.serverTimestamp(),
-                        },
-                      );
-                      _firestore
-                          .collection('Messages')
-                          .doc(widget.user2)
-                          .collection('Users')
-                          .doc(createChatRoomID(widget.user1, widget.user2))
-                          .collection('Chats')
-                          .add(
-                        {
-                          'text': messageText,
-                          'description': {},
-                          'sender': toBeContactedUser,
-                          'type': 'text',
-                          'time': FieldValue.serverTimestamp(),
-                        },
-                      );
-                      _firestore
-                          .collection("Messages")
-                          .doc(user?.uid)
-                          .collection("Users")
-                          .doc(createChatRoomID(widget.user1, widget.user2))
-                          .update({
-                        'time': FieldValue.serverTimestamp(),
-                      });
-
-                      _firestore
-                          .collection("Messages")
-                          .doc(widget.user2)
-                          .collection("Users")
-                          .doc(createChatRoomID(widget.user1, widget.user2))
-                          .update({
-                        'time': FieldValue.serverTimestamp(),
-                      });
-                    },
-                    child: const Text(
-                      'Send',
-                      style: kSendButtonTextStyle,
-                    ),
-                  ),
-                )
-              ],
-            ),
+            )
           ],
         ),
-      );
+      ],
+    ),
+  );
 }

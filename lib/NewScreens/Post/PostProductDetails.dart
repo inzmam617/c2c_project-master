@@ -96,10 +96,8 @@ class _PostProductDetailsState extends State<PostProductDetails> {
         centerTitle: true,
       ),
       body: ModalProgressHUD(
-
         color: Colors.white,
         inAsyncCall: showSpinner,
-
         child: SingleChildScrollView(
           child: Column(
             children: [

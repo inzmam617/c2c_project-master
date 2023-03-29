@@ -17,33 +17,24 @@ class _mywishlistState extends State<mywishlist> {
   String? field;
 
   final _firestore = FirebaseFirestore.instance;
-  List psot = ["0"];
+  List psot  = ["0"];
   var p;
-  // Future<List> getAllPosts() async {
-  //   QuerySnapshot querySnapshot = await _firestore
-  //       .collection('Posts')
-  //       .where('savedPosts', arrayContains: psot)
-  //       .orderBy('time', descending: true)
-  //       .get();
-  //
-  //   List posts = [];
-  //   querySnapshot.docs.forEach((doc) {
-  //     posts.add(post.fromFirestore(doc));
-  //   });
-  // }
 
-    // return posts;
+  // getStream() {
+  //   return _firestore
+  //       .collection('Posts')
+  //       .whereIn(FieldPath.documentId, psot)
+  //       .snapshots();
+  // }
   getStream() {
-    if(psot.isNotEmpty){
       return _firestore
-          .collection('Posts').where(FieldPath.documentId , whereIn: psot)
-      // .where('savedPosts', arrayContains: ["UZt0sQZlJ8UZw7g2LVyC" ,"xBkJ5GMnFzAYNMN5LGeu"])
-      // .orderBy('time', descending: true)
+          .collection('Posts')
+          .where(FieldPath.documentId ,arrayContains: psot)
           .snapshots();
-    }
-    else{
-      return null;
-    }
+    // }
+    // else{
+    //   return null;
+    // }
 
   }
   getsStream() {
@@ -79,6 +70,7 @@ class _mywishlistState extends State<mywishlist> {
           leading: IconButton(
               onPressed: () {
                 Navigator.of(context).pop();
+                // print(psot);
               },
               icon: const Icon(
                 Icons.arrow_back,
@@ -94,7 +86,9 @@ class _mywishlistState extends State<mywishlist> {
           future: FirebaseFirestore.instance.collection("userProfile").doc(FirebaseAuth.instance.currentUser?.uid).get(),
           builder: (BuildContext context, AsyncSnapshot<dynamic> datashot) {
             if(datashot.hasData){
+              // print(datashot.data["usernamae"]);
               psot = datashot.data["savedPosts"];
+              print(psot);
               // print(psot);
               return Padding(
                 padding: const EdgeInsets.all(8.0),
@@ -342,7 +336,7 @@ class _mywishlistState extends State<mywishlist> {
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
                               SvgPicture.asset("assests/Heart.svg"),
-                              const SizedBox(height: 20,),
+                              const SizedBox(height: 10,),
                               const Text("No Products Found!"),
                             ],
                           ),

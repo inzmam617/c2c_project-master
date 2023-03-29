@@ -6,7 +6,6 @@ import '../../bottom_icons_icons.dart';
 import '../../chaticons_icons.dart';
 import '../../screens/profile.dart';
 import '../AllPosts/ProductDetails/ProductDetails.dart';
-import '../Cart/CartPage.dart';
 import '../FilterPage/FilterPage.dart';
 import '../Message&Notification/TabBar.dart';
 import '../MyCloset/MyClosetPage.dart';
@@ -312,7 +311,6 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                               builder: (context, snapshot) {
                                 if (snapshot.hasData) {
                                   return SizedBox(
-                                    // height: MediaQuery.of(context).size.height / 2 ,
                                     child: GridView.builder(
                                         physics: const ScrollPhysics(),
                                         shrinkWrap: true,
@@ -329,9 +327,6 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                                         itemBuilder: (BuildContext ctx, index) {
                                           List<dynamic> savedPosts = snapshot
                                               .data?.docs[index]["savedPosts"];
-                                          // print(snapshot
-                                          //     .data?.docs[index]["savedPosts"]);
-
                                           return Padding(
                                             padding: const EdgeInsets.all(5),
                                             child: Column(
@@ -432,7 +427,6 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                                                                     ScaffoldMessenger.of(context).showSnackBar(
                                                                         const SnackBar(
                                                                             content: Text('Item added to wishlist ❤')));
-
                                                                   },
                                                                   child: Container(
                                                                       height: 25,
@@ -450,14 +444,11 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
                                                                       child: Center(
                                                                           child: SvgPicture
                                                                               .asset('assets/EHeart.svg'))
-
-
                                                                   ),
                                                                 );
                                                               }
 
-                                                              else  {
-                                                                return
+                                                              else  { return
                                                                   ElevatedButton(onPressed: (){
                                                                     print(datashot.data?[index] ["savedPosts"]);
                                                                   }, child: const Text("No DATA"));
@@ -549,117 +540,3 @@ class _HomePageState extends State<HomePage> with WidgetsBindingObserver {
         ));
   }
 }
-// StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
-// stream: FirebaseFirestore.instance
-//     .collection('userProfile')
-// .doc(FirebaseAuth.instance.currentUser?.uid)
-// .snapshots(),
-// builder: (context, datashot) {
-// if (datashot.hasData) {
-// if(datashot.data?["savedPosts"].contains(snapshot.data?.docs[index]["postuid"])){
-// return InkWell(
-// onTap: () async {
-// await _firestore
-//     .collection("userProfile")
-//     .doc(FirebaseAuth.instance.currentUser?.uid)
-//     .update({
-// "savedPosts": FieldValue.arrayRemove([snapshot.data?.docs[index]["postuid"]])});
-// ScaffoldMessenger.of(context).showSnackBar(
-// const SnackBar(
-// content:
-// Text('Item removed from wishlist 💔')));
-//
-// },
-// child: Container(
-// height: 20,
-// width: 20,
-// decoration: BoxDecoration(
-// boxShadow: [
-// BoxShadow(
-// color: Colors.grey,
-// blurRadius: 5.0
-// )
-// ],
-// color: Colors.white,
-// borderRadius: BorderRadius.all(Radius.circular(100))
-// ),
-// child: Center(
-// child: SvgPicture
-//     .asset('assets/Heart.svg'))
-//
-// // ElevatedButton(onPressed: () async {
-// //       await _firestore
-// //           .collection("userProfile")
-// //           .doc(FirebaseAuth.instance.currentUser?.uid)
-// //           .update({
-// //       "savedPosts": FieldValue.arrayRemove([snapshot.data?.docs[index]["postuid"]])});
-// //   // if(datashot.data?["savedPosts"].contains(snapshot.data?.docs[index]["postuid"])){
-// //   //   print("object");
-// //   // }
-// //   // else{
-// //   //   print("no data");
-// //   // }
-// // }, child: Text("LIKEd")),
-// ),
-// );
-// }
-// return InkWell(
-// onTap: () async {
-// await _firestore
-//     .collection("userProfile")
-//     .doc(FirebaseAuth.instance.currentUser?.uid)
-//     .update({
-// "savedPosts": FieldValue.arrayUnion([snapshot.data?.docs[index]["postuid"]])});
-// ScaffoldMessenger.of(context).showSnackBar(
-// const SnackBar(
-// content: Text('Item added to wishlist ❤')));
-//
-// },
-// child: Container(
-// height: 20,
-// width: 20,
-// decoration: BoxDecoration(
-// boxShadow: [
-// BoxShadow(
-// color: Colors.grey,
-// blurRadius: 5.0
-// )
-// ],
-// color: Colors.white,
-// borderRadius: BorderRadius.all(Radius.circular(100))
-// ),
-// child: Center(
-// child: SvgPicture
-//     .asset('assets/EHeart.svg'))
-//
-// // ElevatedButton(onPressed: () async {
-// //       await _firestore
-// //           .collection("userProfile")
-// //           .doc(FirebaseAuth.instance.currentUser?.uid)
-// //           .update({
-// //       "savedPosts": FieldValue.arrayRemove([snapshot.data?.docs[index]["postuid"]])});
-// //   // if(datashot.data?["savedPosts"].contains(snapshot.data?.docs[index]["postuid"])){
-// //   //   print("object");
-// //   // }
-// //   // else{
-// //   //   print("no data");
-// //   // }
-// // }, child: Text("LIKEd")),
-// ),
-// );
-// }
-// // var data = snapshot.data?.data();
-// // if (data?['savedPosts'].contains(["XNva3nhXjVThMD5MkJyG"])){
-// //   liked = true;
-// //   print(liked);
-//
-// // }
-// else  {
-// return
-// ElevatedButton(onPressed: (){
-// print(datashot.data?[index] ["savedPosts"]);
-// }, child: Text("No DATA"));
-// }
-// // return const SizedBox(child: Text("apsdo"),);
-// },
-// ),
